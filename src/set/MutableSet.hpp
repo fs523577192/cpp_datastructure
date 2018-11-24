@@ -5,14 +5,14 @@
 
 namespace NS_DataStructure {
 
-    template<typename E> M_declare_interface_with_base(MutableSet, Set)
+    template<typename E> M_declare_interface_with_base(MutableSet, Set<E>)
 
         M_interface_method void add(E element) M_end_interface_method
 
         /**
          * default implementation
          */
-        public; void addAll(Iterable<E> iterable) {
+        public: void addAll(Iterable<E> iterable) {
             for (Iterator<E> iterator = iterable.iterator(); iterator.hasNext(); ) {
                 add(iterator.next());
             }
@@ -23,7 +23,7 @@ namespace NS_DataStructure {
         /**
          * default implementation
          */
-        public; t_int32 removeAll(Iterable<E> iterable) {
+        public: t_int32 removeAll(Iterable<E> iterable) {
             t_int32 result = 0;
             for (Iterator<E> iterator = iterable.iterator(); iterator.hasNext(); ) {
                 if (remove(iterator.next())) {
