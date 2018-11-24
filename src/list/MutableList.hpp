@@ -5,7 +5,7 @@
 
 namespace NS_DataStructure {
 
-    template<typename E> M_declare_interface_with_base(MutableList, List)
+    template<typename E> M_declare_interface_with_base(MutableList, List<E>)
 
         M_interface_method void set(t_int32 index, E element) M_end_interface_method
 
@@ -20,7 +20,7 @@ namespace NS_DataStructure {
         /**
          * default implementation
          */
-        public; void insertAll(t_int32 index, Iterable<E> iterable) {
+        public: void insertAll(t_int32 index, Iterable<E> iterable) {
             for (Iterator<E> iterator = iterable.iterator(); iterator.hasNext(); index += 1) {
                 insert(index, iterator.next());
             }
@@ -35,7 +35,7 @@ namespace NS_DataStructure {
         /**
          * default implementation
          */
-        public; void appendAll(Iterable<E> iterable) {
+        public: void appendAll(Iterable<E> iterable) {
             for (Iterator<E> iterator = iterable.iterator(); iterator.hasNext(); ) {
                 append(iterator.next());
             }

@@ -5,7 +5,7 @@
 
 namespace NS_DataStructure {
 
-    template<typename E> M_declare_interface_with_base(Collection, Iterable)
+    template<typename E> M_declare_interface_with_base(Collection, Iterable<E>)
 
         M_interface_method t_uint32 size() M_end_interface_method
 
@@ -14,7 +14,7 @@ namespace NS_DataStructure {
          * @return true  if the collection is empty
          *         false if the collection contains at least one element
          */
-        public; t_boolean isEmpty() {
+        public: t_boolean isEmpty() {
             return size() <= 0;
         }
 

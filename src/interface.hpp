@@ -9,7 +9,7 @@
 #define M_declare_interface(name)   M_interface name { \
     M_interface_method ~name() {}
 
-#define M_declare_interface_with_base(name, base)   M_interface name : public base { \
+#define M_declare_interface_with_base(name, baseInterface)   M_interface name : public baseInterface { \
     M_interface_method ~name() {}
 
 #define M_end_interface };
