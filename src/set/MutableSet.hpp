@@ -30,6 +30,7 @@ namespace NS_DataStructure {
                     result += 1;
                 }
             }
+            return result;
         }
 
     M_end_interface

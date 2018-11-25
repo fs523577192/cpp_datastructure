@@ -14,11 +14,24 @@ namespace NS_DataStructure {
          * @return true  if the collection is empty
          *         false if the collection contains at least one element
          */
-        public: t_boolean isEmpty() {
+        public: virtual t_boolean isEmpty() {
             return size() <= 0;
         }
 
-        M_interface_method t_boolean contains(E element) M_end_interface_method
+        /**
+         * default implementation
+         * @return true  if the collection contains at least one element
+         *               that equals to the input element
+         *         false otherwise
+         */
+        public: virtual t_boolean contains(E element) {
+            for (Iterator<E> iterator = iterator(); iterator.hasNext(); ) {
+                if (iterator.next() == element) {
+                    return true;
+                }
+            }
+            return false;
+        }
 
     M_end_interface
 };

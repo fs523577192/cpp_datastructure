@@ -12,6 +12,10 @@
 #define M_declare_interface_with_base(name, baseInterface)   M_interface name : public baseInterface { \
     M_interface_method ~name() {}
 
+#define M_declare_interface_with_base_2(name, base1, base2)   M_interface name : \
+        public base1, public base2 { \
+    M_interface_method ~name() {}
+
 #define M_end_interface };
 
 #define M_implements  public
