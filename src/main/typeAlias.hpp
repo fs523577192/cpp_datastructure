@@ -430,6 +430,6 @@ t_boolean operator<=(t_uint64 a, unsigned long long b) {
 // String
 #include <memory>
 #include <string>
-typedef std::shared_ptr<std::string> String;
+typedef std::shared_ptr<const std::string> String;
 
 #endif // H_typeAlias
