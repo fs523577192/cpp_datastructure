@@ -53,12 +53,13 @@ bool doTestSorting( int* array, unsigned arraySize, std::random_device* p_genera
 bool testSorting( std::ostream* p_outputStream, void sortingMethod(int[], unsigned, unsigned) )
 {
     std::random_device generator;
-    std::uniform_int_distribution<unsigned> distribution(10, 100);
+    std::uniform_int_distribution<unsigned> distribution(1, 1000);
 
     std::cout << "Entropy of the random device: " << generator.entropy() << std::endl;
     
-    for (unsigned i = 0; i < 1; i += 1) {
+    for (unsigned i = 0; i < 10; i += 1) {
         unsigned arraySize = distribution(generator);
+        std::cout << "Array size: " << arraySize << std::endl;
         int* array = new int[arraySize];
         
         bool result = doTestSorting(array, arraySize, &generator, p_outputStream, sortingMethod);
