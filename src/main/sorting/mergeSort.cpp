@@ -15,15 +15,18 @@ template<typename T> void mergeSort(T array[], unsigned beginIndex, unsigned end
     
     unsigned indexOfMiddle = (beginIndex + endIndex) / 2;
     unsigned indexDiff = endIndex - beginIndex, indexOfMiddleDiff = indexOfMiddle - beginIndex;
-    // std::cout << "indexOfMiddle: " << indexOfMiddle << std::endl; //
+    // std::cout << "indexOfMiddle: " << indexOfMiddle << std::endl; // For debug
     mergeSort(array, beginIndex, indexOfMiddle);
     mergeSort(array, indexOfMiddle + 1, endIndex);
     
-    T* temp = new T[indexDiff + 1];
     unsigned i, j, k;
+    // Backup entries whose index is from beginIndex to endIndex
+    T* temp = new T[indexDiff + 1];
     for (i = 0, j = beginIndex;  j <= endIndex;  i += 1, j += 1) {
         temp[i] = array[j];
     }
+    // Merge two lists (array[beginIndex..indexOfMiddle] == temp[0..indexOfMiddleDiff] and
+    // array[indexOfMiddle+1..endIndex] == temp[indexOfMiddleDiff+1..indexDiff])
     for (i = 0, j = indexOfMiddleDiff + 1, k = beginIndex;  i <= indexOfMiddleDiff && j <= indexDiff && k <= endIndex;  k += 1) {
         if (temp[i] <= temp[j]) {
             array[k] = temp[i];
@@ -40,6 +43,7 @@ template<typename T> void mergeSort(T array[], unsigned beginIndex, unsigned end
     for (;  j <= indexDiff && k <= endIndex;  j += 1, k += 1) {
         array[k] = temp[j];
     }
+    // The two lists are merged now
     delete[] temp;
 }
 
