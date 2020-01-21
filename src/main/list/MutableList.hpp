@@ -21,7 +21,7 @@ namespace NS_DataStructure {
          * default implementation
          */
         public: void insertAll(t_int32 index, Iterable<E> iterable) {
-            for (Iterator<E> iterator = iterable.iterator(); iterator.hasNext(); index += 1) {
+            for (Iterator<E> iterator = iterable.iterator(); iterator.hasNext(); index.value += 1) {
                 insert(index, iterator.next());
             }
         }
@@ -47,7 +47,8 @@ namespace NS_DataStructure {
          * default implementation
          */
         public: void removeRange(t_int32 beginIndex, t_int32 endIndex) {
-            for (t_int32 index = endIndex - 1; index >= beginIndex; index -= 1) {
+            for (t_int32 index = endIndex; index > beginIndex; ) {
+                index.value -= 1;
                 remove(index);
             }
         }

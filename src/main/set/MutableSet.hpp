@@ -27,7 +27,7 @@ namespace NS_DataStructure {
             t_int32 result = 0;
             for (Iterator<E> iterator = iterable.iterator(); iterator.hasNext(); ) {
                 if (remove(iterator.next())) {
-                    result += 1;
+                    result.value += 1;
                 }
             }
             return result;
