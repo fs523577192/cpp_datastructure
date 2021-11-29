@@ -1,46 +1,31 @@
 #include <iostream>
+#include <gtest/gtest.h>
 #include "../main/Exception.cpp"
 
-int main() {
+class ExceptionTests : public testing::Test {
+  protected:
     NS_Utility::Exception  exception0;
-    if ( exception0.message.get() ) {
-        std::cerr << "exception0.message is not null" << std::endl;
-        return 1;
-    }
-    if ( exception0.cause != & exception0 ) {
-        std::cerr << "exception0.cause is not &exception0" << std::endl;
-        return 1;
-    }
+};
 
+TEST_F(ExceptionTests, DefaultConstructor) {
+    EXPECT_FALSE( (bool) exception0.message );
+    EXPECT_EQ( & exception0, exception0.cause );
+}
+TEST_F(ExceptionTests, MessageConstructor) {
     NS_Utility::Exception  exception1( std::shared_ptr<std::string>(new std::string("test message")) );
-    if ( (*exception0.message).compare("test message") != 0 ) {
-        std::cerr << "exception1.cause is not \"test message\"" << std::endl;
-        return 1;
-    }
-    if ( exception1.cause != & exception1 ) {
-        std::cerr << "exception1.cause is not &exception1" << std::endl;
-        return 1;
-    }
-
-    NS_Utility::Exception  exception2(&exception0);
-    if ( exception2.message.get() ) {
-        std::cerr << "exception2.message is not null" << std::endl;
-        return 1;
-    }
-    if ( exception2.cause != & exception0 ) {
-        std::cerr << "exception2.cause is not &exception0" << std::endl;
-        return 1;
-    }
+    EXPECT_EQ( 0, (*exception1.message).compare("test message") );
+    EXPECT_EQ( & exception1, exception1.cause );
 
     NS_Utility::Exception  exception3( std::shared_ptr<std::string>(new std::string("test full constructor")), &exception1 );
-    if ( (*exception3.message).compare("test full constructor") != 0 ) {
-        std::cerr << "exception3.message is not null" << std::endl;
-        return 1;
-    }
-    if ( exception3.cause != & exception1 ) {
-        std::cerr << "exception3.cause is not &exception1" << std::endl;
-        return 1;
-    }
-
-    return 0;
+    EXPECT_EQ( 0, (*exception3.message).compare("test full constructor") );
+    EXPECT_EQ( & exception1, exception3.cause );
+}
+TEST_F(ExceptionTests, CauseConstructor) {
+    NS_Utility::Exception  exception2(&exception0);
+    EXPECT_FALSE( (bool) exception2.message );
+    EXPECT_EQ( & exception0, exception2.cause );
+}
+int main(int argc, char** argv) {
+    testing::InitGoogleTest(&argc, argv);
+    return RUN_ALL_TESTS();
 }

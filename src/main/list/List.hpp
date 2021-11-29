@@ -7,7 +7,7 @@ namespace NS_DataStructure {
 
     template<typename E> M_declare_interface_with_base(List, Collection<E>)
 
-        M_interface_method E get(t_int32 index) M_end_interface_method
+        M_interface_method E get(t_uint32 index) M_end_interface_method
 
     M_end_interface
 };
