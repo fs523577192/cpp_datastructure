@@ -158,13 +158,21 @@ class LinkedList {
             LinkedListNode<E>* p_node = getNonCycularNodeByIndex(this->p_head, index);
             if (p_node != nullptr) {
                 p_node->setElement(element);
+                return true;
             }
+            return false;
         }
-        bool addAtIndex(t_uint32 const index, E const element) {
-            LinkedListNode<E>* p_node = getNonCycularNodeByIndex(this->p_head, index);
+        bool insertAtIndex(t_uint32 const index, E const element) {
+            constexpr t_uint32 ZERO = { 0 };
+            if (index == 0) {
+                return prepend(element);
+            }
+            LinkedListNode<E>* p_node = getNonCycularNodeByIndex(this->p_head, index - 1);
             if (p_node != nullptr) {
                 insertAfter(p_node, new LinkedListNode<E>(element));
+                return true;
             }
+            return false;
         }
         bool prepend(E const element) {
             LinkedListNode<E>* p_node = new LinkedListNode<E>(element);
