@@ -33,7 +33,7 @@ typedef union {
 } t_uint16, t_unicode, *p_uint16, *p_unicode;
 
 typedef union {
-	long value;
+	int value;
 	struct {
         #ifdef M_high_endian
 			t_int16  high;
@@ -45,7 +45,7 @@ typedef union {
 	} components;
 } t_int32, *p_int32;
 typedef union {
-	unsigned long value;
+	unsigned int value;
 	struct {
 		#ifdef M_high_endian
 			t_uint16 high;
@@ -82,350 +82,52 @@ typedef union {
 	} components;
 } t_uint64, *p_uint64;
 
-// ----==== operator override for t_int32 ====----
-t_int32 operator&(t_int32 a, t_int32 b) {
-	a.value &= b.value;
-	return a;
-}
-t_int32 operator&(long a, t_int32 b) {
-	b.value &= a;
-	return b;
-}
-t_int32 operator&(t_int32 a, long b) {
-	a.value &= b;
-	return a;
-}
-t_int32 operator|(t_int32 a, t_int32 b) {
-	a.value |= b.value;
-	return a;
-}
-t_int32 operator|(long a, t_int32 b) {
-	b.value = a | b.value;
-	return b;
-}
-t_int32 operator|(t_int32 a, long b) {
-	a.value |= b;
-	return a;
-}
-t_int32 operator+(t_int32 a, t_int32 b) {
-	a.value += b.value;
-	return a;
-}
-t_int32 operator+(long a, t_int32 b) {
-	b.value += a;
-	return b;
-}
-t_int32 operator+(t_int32 a, long b) {
-	a.value += b;
-	return a;
-}
-t_int32 operator-(t_int32 a, t_int32 b) {
-	a.value -= b.value;
-	return a;
-}
-t_int32 operator-(long a, t_int32 b) {
-	b.value = a - b.value;
-	return b;
-}
-t_int32 operator-(t_int32 a, long b) {
-	a.value -= b;
-	return a;
-}
-t_boolean operator>(t_int32 a, t_int32 b) {
-	return a.value > b.value;
-}
-t_boolean operator>(long a, t_int32 b) {
-	return a > b.value;
-}
-t_boolean operator>(t_int32 a, long b) {
-	return a.value > b;
-}
-t_boolean operator<(t_int32 a, t_int32 b) {
-	return a.value < b.value;
-}
-t_boolean operator<(long a, t_int32 b) {
-	return a < b.value;
-}
-t_boolean operator<(t_int32 a, long b) {
-	return a.value < b;
-}
-t_boolean operator>=(t_int32 a, t_int32 b) {
-	return a.value >= b.value;
-}
-t_boolean operator>=(long a, t_int32 b) {
-	return a >= b.value;
-}
-t_boolean operator>=(t_int32 a, long b) {
-	return a.value >= b;
-}
-t_boolean operator<=(t_int32 a, t_int32 b) {
-	return a.value <= b.value;
-}
-t_boolean operator<=(long a, t_int32 b) {
-	return a <= b.value;
-}
-t_boolean operator<=(t_int32 a, long b) {
-	return a.value <= b;
-}
+#define H_defineAssignOperator(myType, cppType, op) myType& operator op(myType& a, myType& b) {a.value op b.value; return a;} \
+        myType& operator op(myType& a, cppType b) {a.value op b; return a;}
+#define H_defineAssignOperators(myType, cppType) \
+        H_defineAssignOperator(myType, cppType, &=); \
+        H_defineAssignOperator(myType, cppType, |=); \
+        H_defineAssignOperator(myType, cppType, ^=); \
+        H_defineAssignOperator(myType, cppType, +=); \
+        H_defineAssignOperator(myType, cppType, -=); //H_defineAssignOperator(myType, cppType, =); \
 
-// ----==== operator override for t_uint32 ====----
-t_uint32 operator&(t_uint32 a, t_uint32 b) {
-	a.value &= b.value;
-	return a;
-}
-t_uint32 operator&(unsigned long a, t_uint32 b) {
-	b.value &= a;
-	return b;
-}
-t_uint32 operator&(t_uint32 a, unsigned long b) {
-	a.value &= b;
-	return a;
-}
-t_uint32 operator|(t_uint32 a, t_uint32 b) {
-	a.value |= b.value;
-	return a;
-}
-t_uint32 operator|(unsigned long a, t_uint32 b) {
-	b.value = a | b.value;
-	return b;
-}
-t_uint32 operator|(t_uint32 a, unsigned long b) {
-	a.value |= b;
-	return a;
-}
-t_uint32 operator+(t_uint32 a, t_uint32 b) {
-	a.value += b.value;
-	return a;
-}
-t_uint32 operator+(unsigned long a, t_uint32 b) {
-	b.value += a;
-	return b;
-}
-t_uint32 operator+(t_uint32 a, unsigned long b) {
-	a.value += b;
-	return a;
-}
-t_uint32 operator-(t_uint32 a, t_uint32 b) {
-	a.value -= b.value;
-	return a;
-}
-t_uint32 operator-(unsigned long a, t_uint32 b) {
-	b.value = a - b.value;
-	return b;
-}
-t_uint32 operator-(t_uint32 a, unsigned long b) {
-	a.value -= b;
-	return a;
-}
-t_boolean operator>(t_uint32 a, t_uint32 b) {
-	return a.value > b.value;
-}
-t_boolean operator>(unsigned long a, t_uint32 b) {
-	return a > b.value;
-}
-t_boolean operator>(t_uint32 a, unsigned long b) {
-	return a.value > b;
-}
-t_boolean operator<(t_uint32 a, t_uint32 b) {
-	return a.value < b.value;
-}
-t_boolean operator<(unsigned long a, t_uint32 b) {
-	return a < b.value;
-}
-t_boolean operator<(t_uint32 a, unsigned long b) {
-	return a.value < b;
-}
-t_boolean operator>=(t_uint32 a, t_uint32 b) {
-	return a.value >= b.value;
-}
-t_boolean operator>=(unsigned long a, t_uint32 b) {
-	return a >= b.value;
-}
-t_boolean operator>=(t_uint32 a, unsigned long b) {
-	return a.value >= b;
-}
-t_boolean operator<=(t_uint32 a, t_uint32 b) {
-	return a.value <= b.value;
-}
-t_boolean operator<=(unsigned long a, t_uint32 b) {
-	return a <= b.value;
-}
-t_boolean operator<=(t_uint32 a, unsigned long b) {
-	return a.value <= b;
-}
+#define H_defineOperator(myType, cppType, op) myType operator op(myType a, myType b) {myType result = {a.value op b.value}; return result;} \
+        myType operator op(myType a, cppType b) {myType result = {a.value op b}; return result;} \
+        myType operator op(cppType a, myType b) {myType result = {a op b.value}; return result;}
+#define H_defineOperators(myType, cppType) H_defineOperator(myType, cppType, &) \
+        H_defineOperator(myType, cppType, |) \
+        H_defineOperator(myType, cppType, ^) \
+        H_defineOperator(myType, cppType, +) \
+        H_defineOperator(myType, cppType, -)
 
-// ----==== operator override for t_int64 ====----
-t_int64 operator&(t_int64 a, t_int64 b) {
-	a.value &= b.value;
-	return a;
-}
-t_int64 operator&(long long a, t_int64 b) {
-	b.value &= a;
-	return b;
-}
-t_int64 operator&(t_int64 a, long long b) {
-	a.value &= b;
-	return a;
-}
-t_int64 operator|(t_int64 a, t_int64 b) {
-	a.value |= b.value;
-	return a;
-}
-t_int64 operator|(long long a, t_int64 b) {
-	b.value = a | b.value;
-	return b;
-}
-t_int64 operator|(t_int64 a, long long b) {
-	a.value |= b;
-	return a;
-}
-t_int64 operator+(t_int64 a, t_int64 b) {
-	a.value += b.value;
-	return a;
-}
-t_int64 operator+(long long a, t_int64 b) {
-	b.value += a;
-	return b;
-}
-t_int64 operator+(t_int64 a, long long b) {
-	a.value += b;
-	return a;
-}
-t_int64 operator-(t_int64 a, t_int64 b) {
-	a.value -= b.value;
-	return a;
-}
-t_int64 operator-(long long a, t_int64 b) {
-	b.value = a - b.value;
-	return b;
-}
-t_int64 operator-(t_int64 a, long long b) {
-	a.value -= b;
-	return a;
-}
-t_boolean operator>=(t_int64 a, t_int64 b) {
-	return a.value >= b.value;
-}
-t_boolean operator>=(long long a, t_int64 b) {
-	return a >= b.value;
-}
-t_boolean operator>=(t_int64 a, long long b) {
-	return a.value >= b;
-}
-t_boolean operator<=(t_int64 a, t_int64 b) {
-	return a.value <= b.value;
-}
-t_boolean operator<=(long long a, t_int64 b) {
-	return a <= b.value;
-}
-t_boolean operator<=(t_int64 a, long long b) {
-	return a.value <= b;
-}
-t_boolean operator>(t_int64 a, t_int64 b) {
-	return a.value > b.value;
-}
-t_boolean operator>(long long a, t_int64 b) {
-	return a > b.value;
-}
-t_boolean operator>(t_int64 a, long long b) {
-	return a.value > b;
-}
-t_boolean operator<(t_int64 a, t_int64 b) {
-	return a.value < b.value;
-}
-t_boolean operator<(long long a, t_int64 b) {
-	return a < b.value;
-}
-t_boolean operator<(t_int64 a, long long b) {
-	return a.value < b;
-}
+#define H_defineComparator(myType, cppType, op) t_boolean operator op(myType a, myType b) {return a.value op b.value;} \
+        t_boolean operator op(myType a, cppType b) {return a.value op b;} \
+        t_boolean operator op(cppType a, myType b) {return a op b.value;}
+#define H_defineComparators(myType, cppType) H_defineComparator(myType, cppType, ==) \
+        H_defineComparator(myType, cppType, <) \
+        H_defineComparator(myType, cppType, <=) \
+        H_defineComparator(myType, cppType, >) \
+        H_defineComparator(myType, cppType, >=)
 
-// ----==== operator override for t_uint64 ====----
-t_uint64 operator&(t_uint64 a, t_uint64 b) {
-	a.value &= b.value;
-	return a;
-}
-t_uint64 operator&(unsigned long long a, t_uint64 b) {
-	b.value &= a;
-	return b;
-}
-t_uint64 operator&(t_uint64 a, unsigned long long b) {
-	a.value &= b;
-	return a;
-}
-t_uint64 operator|(t_uint64 a, t_uint64 b) {
-	a.value |= b.value;
-	return a;
-}
-t_uint64 operator|(unsigned long long a, t_uint64 b) {
-	b.value = a | b.value;
-	return b;
-}
-t_uint64 operator|(t_uint64 a, unsigned long long b) {
-	a.value |= b;
-	return a;
-}
-t_uint64 operator+(t_uint64 a, t_uint64 b) {
-	a.value += b.value;
-	return a;
-}
-t_uint64 operator+(unsigned long long a, t_uint64 b) {
-	b.value += a;
-	return b;
-}
-t_uint64 operator+(t_uint64 a, unsigned long long b) {
-	a.value += b;
-	return a;
-}
-t_uint64 operator-(t_uint64 a, t_uint64 b) {
-	a.value -= b.value;
-	return a;
-}
-t_uint64 operator-(unsigned long long a, t_uint64 b) {
-	b.value = a - b.value;
-	return b;
-}
-t_uint64 operator-(t_uint64 a, unsigned long long b) {
-	a.value -= b;
-	return a;
-}
-t_boolean operator>(t_uint64 a, t_uint64 b) {
-	return a.value > b.value;
-}
-t_boolean operator>(unsigned long long a, t_uint64 b) {
-	return a > b.value;
-}
-t_boolean operator>(t_uint64 a, unsigned long long b) {
-	return a.value > b;
-}
-t_boolean operator<(t_uint64 a, t_uint64 b) {
-	return a.value < b.value;
-}
-t_boolean operator<(unsigned long long a, t_uint64 b) {
-	return a < b.value;
-}
-t_boolean operator<(t_uint64 a, unsigned long long b) {
-	return a.value < b;
-}
-t_boolean operator>=(t_uint64 a, t_uint64 b) {
-	return a.value >= b.value;
-}
-t_boolean operator>=(unsigned long long a, t_uint64 b) {
-	return a >= b.value;
-}
-t_boolean operator>=(t_uint64 a, unsigned long long b) {
-	return a.value >= b;
-}
-t_boolean operator<=(t_uint64 a, t_uint64 b) {
-	return a.value <= b.value;
-}
-t_boolean operator<=(unsigned long long a, t_uint64 b) {
-	return a <= b.value;
-}
-t_boolean operator<=(t_uint64 a, unsigned long long b) {
-	return a.value <= b;
-}
+#define H_defineAllOperators(myType, cppType) H_defineAssignOperators(myType, cppType) \
+        H_defineOperators(myType, cppType) \
+        H_defineComparators(myType, cppType)
 
+H_defineAllOperators(t_int32, int);
+
+H_defineAllOperators(t_uint32, unsigned int);
+
+H_defineAllOperators(t_int64, long long);
+
+H_defineAllOperators(t_uint64, unsigned long long);
+
+#undef H_defineAllOperators
+#undef H_defineAssignOperators
+#undef H_defineAssignOperator
+#undef H_defineOperators
+#undef H_defineOperator
+#undef H_defineComparators
+#undef H_defineComparator
 
 // String
 #include <memory>
