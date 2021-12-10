@@ -24,9 +24,9 @@ namespace NS_DataStructure {
          *               that equals to the input element
          *         false otherwise
          */
-        public: virtual t_boolean contains(E element) {
-            for (Iterator<E> iterator = iterator(); iterator.hasNext(); ) {
-                if (iterator.next() == element) {
+        public: virtual t_boolean contains(E const element) {
+            for (Iterator<E>* p_itr = this->iterator(); p_itr->hasNext(); ) {
+                if (p_itr->next() == element) {
                     return true;
                 }
             }
