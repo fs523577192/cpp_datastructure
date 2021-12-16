@@ -2,10 +2,9 @@
 #define H_LinkedList
 
 #ifndef H_handleLinkedListIndexOutOfBound
-#define H_handleLinkedListIndexOutOfBound(p_list, size, index) return nullptr
+#define H_handleLinkedListIndexOutOfBound(p_list, size, index)  throw "List index out of bounds"
 #endif
 
-#include<iostream>
 #include "./List.hpp"
 
 namespace NS_DataStructure {
@@ -153,12 +152,8 @@ namespace NS_DataStructure {
             LinkedListNode<E>* p_head = nullptr;
 
             inline void prepend(LinkedListNode<E>* const p_nodeToInsert) {
-                if (this->p_head == nullptr) {
-                    this->p_head = p_nodeToInsert;
-                } else {
-                    p_nodeToInsert->setNext(this->p_head);
-                    this->p_head = p_nodeToInsert;
-                }
+                p_nodeToInsert->setNext(this->p_head);
+                this->p_head = p_nodeToInsert;
             }
 
             void append(LinkedListNode<E>* const p_nodeToInsert) {
@@ -220,6 +215,81 @@ namespace NS_DataStructure {
                 return new NonCircularIterator<E>(this->p_head);
             }
         };
-    }; // virtual class LinkedList
+        template<typename E> class BiDirectionalNonCircular : public List<E> {
+          protected:
+            DoublyLinkedListNode<E>* p_head = nullptr;
+
+            inline void prepend(DoublyLinkedListNode<E>* const p_nodeToInsert) {
+                p_nodeToInsert->setNext(this->p_head);
+                if (this->p_head != nullptr) {
+                    this->p_head->setPrev(p_nodeToInsert);
+                }
+                this->p_head = p_nodeToInsert;
+            }
+
+            void append(DoublyLinkedListNode<E>* const p_nodeToInsert) {
+                if (this->p_head == nullptr) {
+                    this->p_head = p_nodeToInsert;
+                }
+                DoublyLinkedListNode<E>* p_node;
+                for (p_node = this->p_head; p_node->next != nullptr; p_node = p_node->next);
+                p_node->next = p_nodeToInsert;
+                p_nodeToInsert->setPrev(p_node);
+            }
+          public:
+            t_uint32 size() {
+                return LinkedList::getSize(this->p_head);
+            }
+            t_boolean isEmpty() {
+                return this->p_head == nullptr;
+            }
+            t_boolean contains(E const element) {
+                for (DoublyLinkedListNode<E>* p_node = this->p_head; p_node != nullptr; p_node = p_node->getNext()) {
+                    if (p_node->getElement() == element) {
+                        return true;
+                    }
+                }
+                return false;
+            }
+
+            E get(t_uint32 const index) {
+                DoublyLinkedListNode<E>* p_node = getNonCycularNodeByIndex(this->p_head, index);
+                return p_node->getElement();
+            }
+            t_boolean set(t_uint32 const index, E const element) {
+                DoublyLinkedListNode<E>* p_node = getNonCycularNodeByIndex(this->p_head, index);
+                if (p_node != nullptr) {
+                    p_node->setElement(element);
+                    return true;
+                }
+                return false;
+            }
+            t_boolean add(t_uint32 const index, E const element) {
+                constexpr t_uint32 ZERO = { 0 };
+                if (index == 0) {
+                    return prepend(element);
+                }
+                DoublyLinkedListNode<E>* p_node = getNonCycularNodeByIndex(this->p_head, index - 1);
+                if (p_node != nullptr) {
+                    insertAfter(p_node, new DoublyLinkedListNode<E>(element));
+                    return true;
+                }
+                return false;
+            }
+            t_boolean prepend(E const element) {
+                DoublyLinkedListNode<E>* p_node = new DoublyLinkedListNode<E>(element);
+                prepend(p_node);
+                return true;
+            }
+            t_boolean append(E const element) {
+                append(new DoublyLinkedListNode<E>(element));
+                return true;
+            }
+
+            Iterator<E>* iterator() {
+                return new NonCircularIterator<E>(this->p_head);
+            }
+        };
+    }; // class LinkedList
 }; // namespace NS_DataStructure
 #endif // ifndef H_LinkedList
